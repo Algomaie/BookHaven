@@ -1,0 +1,139 @@
+
+-- Create database
+CREATE DATABASE bookhaven;
+USE bookhaven;
+
+-- Create User table
+CREATE TABLE User (
+    userID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    UserType ENUM('customer', 'seller', 'admin') NOT NULL
+);
+
+-- Create Customer table (inherits User)
+CREATE TABLE Customer (
+    userID INT PRIMARY KEY,
+    Address VARCHAR(255) NOT NULL,
+    Phone VARCHAR(20) NOT NULL,
+    FOREIGN KEY (userID) REFERENCES User(userID) ON DELETE CASCADE
+);
+
+-- Create Seller table (inherits User)
+CREATE TABLE Seller (
+    userID INT PRIMARY KEY,
+    StoreName VARCHAR(255) NOT NULL,
+    SalesReport TEXT NULL,
+    FOREIGN KEY (userID) REFERENCES User(userID) ON DELETE CASCADE
+);
+
+-- Create Admin table (inherits User)
+CREATE TABLE Admin (
+    userID INT PRIMARY KEY,
+    FOREIGN KEY (userID) REFERENCES User(userID) ON DELETE CASCADE
+);
+
+-- Create Book table
+CREATE TABLE Book (
+    BookID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Author VARCHAR(255) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    Stock INT NOT NULL,
+    Category VARCHAR(100) NOT NULL,
+    Rating DECIMAL(3,2) DEFAULT 0,
+    Description TEXT,
+    CoverImage VARCHAR(255),
+    SellerID INT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (SellerID) REFERENCES Seller(userID)
+);
+
+-- Create Order table
+CREATE TABLE `Order` (
+    OrderID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    Status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled') NOT NULL DEFAULT 'Pending',
+    FOREIGN KEY (CustomerID) REFERENCES Customer(userID)
+);
+
+-- Create OrderItem table (association between Order and Book)
+CREATE TABLE OrderItem (
+    OrderID INT,
+    BookID INT,
+    Quantity INT NOT NULL,
+    Subtotal DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (OrderID, BookID),
+    FOREIGN KEY (OrderID) REFERENCES `Order`(OrderID),
+    FOREIGN KEY (BookID) REFERENCES Book(BookID)
+);
+
+-- Create Review table
+CREATE TABLE Review (
+    ReviewID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerID INT,
+    BookID INT,
+    Rating DECIMAL(2,1) NOT NULL CHECK (Rating BETWEEN 1 AND 5),
+    Comment TEXT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(userID),
+    FOREIGN KEY (BookID) REFERENCES Book(BookID)
+);
+
+-- Create Cart table
+CREATE TABLE Cart (
+    CartID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerID INT UNIQUE,
+    TotalPrice DECIMAL(10,2) DEFAULT 0,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(userID)
+);
+
+-- Create CartItem table (association between Cart and Book)
+CREATE TABLE CartItem (
+    CartID INT,
+    BookID INT,
+    Quantity INT NOT NULL,
+    PRIMARY KEY (CartID, BookID),
+    FOREIGN KEY (CartID) REFERENCES Cart(CartID),
+    FOREIGN KEY (BookID) REFERENCES Book(BookID)
+);
+
+-- Insert some sample data
+-- Admin user
+INSERT INTO User (Name, Email, Password, UserType) VALUES 
+('Admin User', 'admin@bookhaven.com', '$2y$10$GkWF78qGF6mXrMHB.jPMI.edrrpS89UM3CX3gFenQ1AQfnEwNOAMK', 'admin');
+INSERT INTO Admin (userID) VALUES (LAST_INSERT_ID());
+
+-- Sample customers
+INSERT INTO User (Name, Email, Password, UserType) VALUES 
+('John Doe', 'john@example.com', '$2y$10$jT9CgARRQBJBwrRJUFkOVeGv8Vq3/dAhqMPvh9T1iyAIrk1WCwkV2', 'customer');
+SET @john_id = LAST_INSERT_ID();
+INSERT INTO Customer (userID, Address, Phone) VALUES (@john_id, '123 Main St, New York, NY', '555-1234');
+INSERT INTO Cart (CustomerID) VALUES (@john_id);
+
+INSERT INTO User (Name, Email, Password, UserType) VALUES 
+('Jane Smith', 'jane@example.com', '$2y$10$jT9CgARRQBJBwrRJUFkOVeGv8Vq3/dAhqMPvh9T1iyAIrk1WCwkV2', 'customer');
+SET @jane_id = LAST_INSERT_ID();
+INSERT INTO Customer (userID, Address, Phone) VALUES (@jane_id, '456 Elm St, Los Angeles, CA', '555-5678');
+INSERT INTO Cart (CustomerID) VALUES (@jane_id);
+
+-- Sample sellers
+INSERT INTO User (Name, Email, Password, UserType) VALUES 
+('BookMaster', 'seller@example.com', '$2y$10$jT9CgARRQBJBwrRJUFkOVeGv8Vq3/dAhqMPvh9T1iyAIrk1WCwkV2', 'seller');
+SET @seller_id = LAST_INSERT_ID();
+INSERT INTO Seller (userID, StoreName) VALUES (@seller_id, 'Premium Books');
+
+-- Sample books
+INSERT INTO Book (Title, Author, Price, Stock, Category, Rating, Description, CoverImage, SellerID) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 14.99, 25, 'Fiction', 4.5, 'The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald.', 'gatsby.jpg', @seller_id),
+('To Kill a Mockingbird', 'Harper Lee', 12.99, 15, 'Fiction', 4.8, 'To Kill a Mockingbird is a novel by Harper Lee published in 1960.', 'mockingbird.jpg', @seller_id),
+('The Subtle Art of Not Giving a F*ck', 'Mark Manson', 18.99, 32, 'Self-Help', 4.2, 'A generation-defining self-help guide.', 'subtle_art.jpg', @seller_id);
+
+-- Sample reviews
+INSERT INTO Review (CustomerID, BookID, Rating, Comment) VALUES
+(@john_id, 1, 5.0, 'Absolutely loved this book! The characters are so well developed and the story is captivating.'),
+(@jane_id, 1, 4.0, 'A classic that everyone should read. The narrative style is unique and engaging.'),
+(@john_id, 2, 5.0, 'One of the most important books of our time. The themes are still relevant today.');

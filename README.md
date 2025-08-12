@@ -36,25 +36,25 @@ The platform allows customers to browse all available books and place orders, wh
 ![Home Page](Screenshots/home-page.png)
 
 ### Book Catalog
-![Book Catalog](Screenshots/book-catalog.png)
+![Book Catalog](Screenshots/book-catalog.jpg)
 
 ### Book Details
-![Book Details](Screenshots/book-details.png)
+![Book Details](Screenshots/book-details.jpg)
 
 ### Shopping Cart
-![Shopping Cart](Screenshots/shopping-cart.png)
+![Shopping Cart](Screenshots/shopping-cart.jpg)
 
 ### Admin Dashboard
-![Admin Dashboard](Screenshots/admin-dashboard.png)
+![Admin Dashboard](Screenshots/admin-dashboard.jpg)
 
 ### Seller Dashboard
-![Seller Dashboard](Screenshots/seller-dashboard.png)
+![Seller Dashboard](Screenshots/seller-dashboard.jpg)
 
 ### User Management
-![User Management](Screenshots/user-management.png)
+![User Management](Screenshots/user-management.jpg)
 
 ### Order Management
-![Order Management](Screenshots/order-management.png)
+![Order Management](Screenshots/order-management.jpg)
 
 ## 🛠️ Built With
 

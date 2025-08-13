@@ -1,7 +1,7 @@
 # BookHaven - Online Bookstore Platform
 
 <div align="center">
-  <img src="Screenshots/logo.png" alt="BookHaven Logo" width="200">
+  <img src="Screenshots/logo.jpg" alt="BookHaven Logo" width="200">
   
   [[PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
   [[MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
@@ -33,7 +33,8 @@ The platform allows customers to browse all available books and place orders, wh
 ## 🖼️ Screenshots
 
 ### Home Page
-![Home Page](Screenshots/home-page.png)
+
+![Home Page](Screenshots/home-page.jpg)
 
 ### Book Catalog
 ![Book Catalog](Screenshots/book-catalog.jpg)

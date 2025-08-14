@@ -91,7 +91,7 @@ composer --version
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/bookhaven.git
+   git clone https://github.com/Algomaie/bookhaven.git
    cd bookhaven
    ```
 
@@ -103,7 +103,7 @@ composer --version
    exit
    
    # Import the database schema
-   mysql -u root -p bookhaven < database/bookhaven.sql
+   mysql -u root -p bookhaven < bookhaven.sql
    ```
 
 3. **Configure database connection**
@@ -153,6 +153,10 @@ define('DB_CHARSET', 'utf8mb4');
 
 ### Book Details
 ![Book Details](Screenshots/book-details.jpg)
+### Book Reviews
+![Book Reviews](Screenshots/BookReviews.jpg)
+### Book Management
+![Book Management](Screenshots/Book-Management.jpg)
 
 ### Shopping Cart
 ![Shopping Cart](Screenshots/shopping-cart.jpg)
@@ -162,12 +166,20 @@ define('DB_CHARSET', 'utf8mb4');
 
 ### Seller Dashboard
 ![Seller Dashboard](Screenshots/seller-dashboard.jpg)
+### Seller Books
+![Seller Books](Screenshots/Seller-Books.jpg)
+### Seller Orders
+![Seller Orders](Screenshots/seller-orders.jpg)
+### Seller Analytics
+![Seller Analytics](Screenshots/SellerAnalytics.jpg)
 
 ### User Management
 ![User Management](Screenshots/user-management.jpg)
 
 ### Order Management
 ![Order Management](Screenshots/order-management.jpg)
+### Seller Store Settings
+![Seller Store Settings](Screenshots/SellerStoreSettings.jpg)
 
 ## 🛠️ Built With
 
